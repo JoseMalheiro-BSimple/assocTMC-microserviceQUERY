@@ -27,7 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="AssociationTrainingModuleCollaboratorServiceTests\" />
+    <Folder Include="AssociationTrainingModuleCollaboratorService\" />
+    <Folder Include="CollaboratorService\" />
+    <Folder Include="TrainingModuleService\" />
   </ItemGroup>
 
 </Project>
