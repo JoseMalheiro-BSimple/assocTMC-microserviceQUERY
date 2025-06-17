@@ -10,7 +10,7 @@ namespace Infrastructure.Repositories
     public class AssociationTrainingModuleCollaboratorRepositoryEF : GenericRepositoryEF<IAssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDataModel>, IAssociationTrainingModuleCollaboratorsRepository
     {
         private readonly IMapper _mapper;
-        public AssociationTrainingModuleCollaboratorRepositoryEF(AbsanteeContext context, IMapper mapper) : base(context, mapper)
+        public AssociationTrainingModuleCollaboratorRepositoryEF(AssocTMCContext context, IMapper mapper) : base(context, mapper)
         {
             _mapper = mapper;
         }

@@ -1,11 +1,5 @@
-﻿using Domain.Models;
-
-namespace Domain.Interfaces
+﻿namespace Domain.Interfaces;
+public interface ITrainingModule
 {
-    public interface ITrainingModule
-    {
-        Guid Id { get; }
-        Guid TrainingSubjectId { get; }
-        List<PeriodDateTime> Periods { get; }
-    }
+    Guid Id { get; }
 }

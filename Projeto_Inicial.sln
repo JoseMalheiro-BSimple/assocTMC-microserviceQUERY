@@ -12,6 +12,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application.Tests", "Application.Tests\Application.Tests.csproj", "{2C21FA06-3C5C-4829-8A75-2EC7C551E076}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{B8E4FA4B-570F-4651-95B1-79FF2FCF65B4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8D907120-A088-4365-9997-E27C33FD3B59} = {8D907120-A088-4365-9997-E27C33FD3B59}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{8D907120-A088-4365-9997-E27C33FD3B59}"
 EndProject

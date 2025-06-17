@@ -7,7 +7,7 @@ namespace Infrastructure.Tests;
 public class RepositoryTestBase
 {
     protected readonly Mock<IMapper> _mapper;
-    protected readonly AbsanteeContext context;
+    protected readonly AssocTMCContext context;
 
     protected RepositoryTestBase()
     {
@@ -19,10 +19,10 @@ public class RepositoryTestBase
         //_mapper = config.CreateMapper();
         _mapper = new Mock<IMapper>();
         // Configure in-memory database
-        var options = new DbContextOptionsBuilder<AbsanteeContext>()
+        var options = new DbContextOptionsBuilder<AssocTMCContext>()
             .UseInMemoryDatabase(Guid.NewGuid().ToString()) // unique DB per test
             .Options;
 
-        context = new AbsanteeContext(options);
+        context = new AssocTMCContext(options);
     }
 }

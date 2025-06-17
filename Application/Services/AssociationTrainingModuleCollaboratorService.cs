@@ -1,9 +1,8 @@
-using Application.DTO.AssociationTrainingModuleCollaborator;
-using AutoMapper;
+using Application.DTO;
+using Application.Messaging;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.Models;
 
 namespace Application.Services;
 
@@ -11,22 +10,21 @@ public class AssociationTrainingModuleCollaboratorService
 {
     public IAssociationTrainingModuleCollaboratorsRepository _assocTMCRepository;
     public IAssociationTrainingModuleCollaboratorFactory _assocTMCFactory;
-    public IMapper _mapper;
-
-    public AssociationTrainingModuleCollaboratorService(IAssociationTrainingModuleCollaboratorsRepository associationTrainingModuleCollaboratorsRepository, IAssociationTrainingModuleCollaboratorFactory associationTrainingModuleCollaboratorFactory, IMapper mapper)
+    private readonly IMessagePublisher _publisher;
+    public AssociationTrainingModuleCollaboratorService(IAssociationTrainingModuleCollaboratorsRepository associationTrainingModuleCollaboratorsRepository, IAssociationTrainingModuleCollaboratorFactory associationTrainingModuleCollaboratorFactory, IMessagePublisher messagePublisher)
     {
         _assocTMCRepository = associationTrainingModuleCollaboratorsRepository;
         _assocTMCFactory = associationTrainingModuleCollaboratorFactory;
-        _mapper = mapper;
+        _publisher = messagePublisher;
     }
 
-    public async Task<Result<AssociationTrainingModuleCollaboratorDTO>> Add(Guid tmId, CreateAssociationTrainingModuleCollaboratorDTO assocDTO)
+    public async Task<Result<AssociationTrainingModuleCollaboratorDTO>> Create(CreateAssociationTrainingModuleCollaboratorDTO assocDTO)
     {
         IAssociationTrainingModuleCollaborator tmc;
 
         try
         {
-            tmc = await _assocTMCFactory.Create(tmId, assocDTO.CollaboratorId);
+            tmc = await _assocTMCFactory.Create(assocDTO.TrainingModuleId, assocDTO.CollaboratorId, assocDTO.PeriodDate.InitDate, assocDTO.PeriodDate.FinalDate);
             tmc = await _assocTMCRepository.AddAsync(tmc);
         }
         catch (ArgumentException a)
@@ -38,7 +36,15 @@ public class AssociationTrainingModuleCollaboratorService
             return Result<AssociationTrainingModuleCollaboratorDTO>.Failure(Error.BadRequest(e.Message));
         }
 
-        var result = _mapper.Map<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDTO>((AssociationTrainingModuleCollaborator)tmc);
+        // Publish results - new association has been created
+        await _publisher.PublishOrderSubmittedAsync(tmc.Id);
+
+        var result = new AssociationTrainingModuleCollaboratorDTO();
+        result.Id = tmc.Id;
+        result.CollaboratorId = tmc.CollaboratorId;
+        result.TrainingModuleId = tmc.TrainingModuleId;
+        result.PeriodDate = tmc.PeriodDate;
+
         return Result<AssociationTrainingModuleCollaboratorDTO>.Success(result);
     }
 }

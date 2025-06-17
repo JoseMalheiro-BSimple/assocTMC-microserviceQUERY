@@ -4,7 +4,6 @@ using Domain.Models;
 using Infrastructure.DataModel;
 
 namespace Infrastructure.Resolvers;
-
 public class TrainingModuleDataModelConverter : ITypeConverter<TrainingModuleDataModel, TrainingModule>
 {
     private readonly ITrainingModuleFactory _factory;

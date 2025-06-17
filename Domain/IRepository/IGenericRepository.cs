@@ -1,7 +1,4 @@
 ﻿namespace Domain.IRepository;
-
-using System.Linq.Expressions;
-
 public interface IGenericRepositoryEF<TInterface, TDomain, TDataModel>
         where TInterface : class
         where TDomain : class, TInterface

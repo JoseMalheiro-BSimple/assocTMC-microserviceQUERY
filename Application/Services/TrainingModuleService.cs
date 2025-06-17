@@ -1,45 +1,25 @@
-using Application.DTO.TrainingModule;
-using AutoMapper;
+﻿using Application.Interfaces;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.Models;
 
 namespace Application.Services;
-
-public class TrainingModuleService
+public class TrainingModuleService : ITrainingModuleService
 {
-    private readonly ITrainingModuleRepository _trainingModuleRepository;
-    private readonly ITrainingModuleFactory _trainingModuleFactory;
-    private readonly IMapper _mapper;
+    public ITrainingModuleRepository _tmRepository { get; set; }
+    public ITrainingModuleFactory _tmFactory { get; set; }
 
-    public TrainingModuleService(ITrainingModuleRepository trainingModuleRepository, ITrainingModuleFactory trainingModuleFactory, IMapper mapper)
+    public TrainingModuleService(ITrainingModuleRepository trainingModuleRepository, ITrainingModuleFactory trainingModuleFactory)
     {
-        _trainingModuleRepository = trainingModuleRepository;
-        _trainingModuleFactory = trainingModuleFactory;
-        _mapper = mapper;
+        _tmRepository = trainingModuleRepository;
+        _tmFactory = trainingModuleFactory;
     }
 
-    public async Task<Result<TrainingModuleDTO>> Add(AddTrainingModuleDTO tmDTO)
+    public async Task SubmitAsync(Guid id)
     {
-        ITrainingModule tm;
+        ITrainingModule trainingModule;
 
-        try
-        {
-            tm = await _trainingModuleFactory.Create(tmDTO.TrainingSubjectId, tmDTO.Periods);
-            tm = await _trainingModuleRepository.AddAsync(tm);
-        }
-        catch (ArgumentException a)
-        {
-            return Result<TrainingModuleDTO>.Failure(Error.BadRequest(a.Message));
-        }
-        catch (Exception e)
-        {
-            return Result<TrainingModuleDTO>.Failure(Error.BadRequest(e.Message));
-        }
-
-        var result = _mapper.Map<TrainingModule, TrainingModuleDTO>((TrainingModule)tm);
-
-        return Result<TrainingModuleDTO>.Success(result);
+        trainingModule = _tmFactory.Create(id);
+        await _tmRepository.AddAsync(trainingModule);
     }
 }

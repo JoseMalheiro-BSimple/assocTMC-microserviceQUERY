@@ -24,19 +24,19 @@ public class IntegrationTestsWebApplicationFactory<TProgram> : WebApplicationFac
         {
             // Remove existing DbContext
             var descriptor = services.SingleOrDefault(
-                d => d.ServiceType == typeof(DbContextOptions<AbsanteeContext>));
+                d => d.ServiceType == typeof(DbContextOptions<AssocTMCContext>));
 
             if (descriptor != null)
                 services.Remove(descriptor);
 
             // Register AbsanteeContext with container's connection string
-            services.AddDbContext<AbsanteeContext>(options =>
+            services.AddDbContext<AssocTMCContext>(options =>
                 options.UseNpgsql(_postgres.GetConnectionString()));
 
             // Ensure database is created
             var sp = services.BuildServiceProvider();
             using var scope = sp.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<AbsanteeContext>();
+            var db = scope.ServiceProvider.GetRequiredService<AssocTMCContext>();
             db.Database.EnsureCreated();
         });
     }

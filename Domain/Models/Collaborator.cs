@@ -1,34 +1,17 @@
-using Domain.Interfaces;
+﻿using Domain.Interfaces;
 
 namespace Domain.Models;
-
 public class Collaborator : ICollaborator
 {
-    public Guid Id { get; }
-    public Guid UserId { get; }
-    public PeriodDateTime PeriodDateTime { get; private set; }
+    public Guid Id { get; set; }
 
-    public Collaborator(Guid userId, PeriodDateTime periodDateTime)
+    public Collaborator()
     {
-        PeriodDateTime = periodDateTime;
-        UserId = userId;
-        Id = new Guid();
+        Id = Guid.NewGuid();
     }
 
-    public Collaborator(Guid id, Guid userId, PeriodDateTime periodDateTime)
+    public Collaborator(Guid id)
     {
         Id = id;
-        UserId = userId;
-        PeriodDateTime = periodDateTime;
-    }
-
-    public bool ContractContainsDates(PeriodDateTime periodDateTime)
-    {
-        return PeriodDateTime.Contains(periodDateTime);
-    }
-
-    public void UpdatePeriod(PeriodDateTime period)
-    {
-        this.PeriodDateTime = period;
     }
 }

@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Models;
 
-namespace Domain.Interfaces
+namespace Domain.Interfaces;
+public interface IAssociationTrainingModuleCollaborator
 {
-    public interface IAssociationTrainingModuleCollaborator
-    {
-        Guid Id { get; }
-        Guid TrainingModuleId { get; }
-        Guid CollaboratorId { get; }
-    }
+    Guid Id { get; }
+    Guid TrainingModuleId { get; }
+    Guid CollaboratorId { get; }
+    PeriodDate PeriodDate { get; }
 }
