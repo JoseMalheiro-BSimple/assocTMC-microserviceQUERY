@@ -5,6 +5,8 @@ using Domain.Models;
 namespace Domain.Factory;
 public class CollaboratorFactory : ICollaboratorFactory
 {
+    public CollaboratorFactory() { }
+
     public ICollaborator Create(Guid id)
     {
         return new Collaborator(id);

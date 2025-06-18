@@ -4,6 +4,9 @@ public class PeriodDate
     public DateOnly InitDate { get; set; }
     public DateOnly FinalDate { get; set; }
 
+    public PeriodDate() { }
+
+
     public PeriodDate(DateOnly InitDate, DateOnly FinalDate)
     {
         if (InitDate > FinalDate)
@@ -11,9 +14,6 @@ public class PeriodDate
         this.InitDate = InitDate;
         this.FinalDate = FinalDate;
     }
-
-    public PeriodDate() { }
-
 
     public DateOnly GetInitDate()
     {

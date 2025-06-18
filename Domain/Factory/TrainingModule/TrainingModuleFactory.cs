@@ -5,6 +5,8 @@ using Domain.Visitor;
 namespace Domain.Factory;
 public class TrainingModuleFactory : ITrainingModuleFactory
 {
+    public TrainingModuleFactory() { }
+
     public ITrainingModule Create(Guid id)
     {
         return new TrainingModule(id);
