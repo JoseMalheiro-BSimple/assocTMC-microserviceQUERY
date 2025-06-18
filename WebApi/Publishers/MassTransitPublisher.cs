@@ -1,5 +1,6 @@
 ﻿using Application.Publishers;
 using Domain.Messaging;
+using Domain.Models;
 using MassTransit;
 
 namespace WebApi.Publishers;
@@ -12,8 +13,8 @@ public class MassTransitPublisher : IMessagePublisher
         _publishEndpoint = publishEndpoint;
     }
 
-    public async Task PublishOrderSubmittedAsync(Guid Id)
+    public async Task PublishOrderSubmittedAsync(Guid Id, Guid trainingModuleId, Guid collaboratorId, PeriodDate periodDate)
     {
-        await _publishEndpoint.Publish(new AssociationTrainingModuleCollaboratorCreated(Id));
+        await _publishEndpoint.Publish(new AssociationTrainingModuleCollaboratorCreated(Id, trainingModuleId, collaboratorId, periodDate));
     }
 }

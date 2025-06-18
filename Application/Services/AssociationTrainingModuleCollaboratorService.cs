@@ -3,6 +3,7 @@ using Application.Publishers;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
+using Domain.Models;
 
 namespace Application.Services;
 
@@ -37,7 +38,7 @@ public class AssociationTrainingModuleCollaboratorService
         }
 
         // Publish results - new association has been created
-        await _publisher.PublishOrderSubmittedAsync(tmc.Id);
+        await _publisher.PublishOrderSubmittedAsync(tmc.Id, tmc.TrainingModuleId, tmc.CollaboratorId, tmc.PeriodDate);
 
         var result = new AssociationTrainingModuleCollaboratorDTO();
         result.Id = tmc.Id;
@@ -46,5 +47,13 @@ public class AssociationTrainingModuleCollaboratorService
         result.PeriodDate = tmc.PeriodDate;
 
         return Result<AssociationTrainingModuleCollaboratorDTO>.Success(result);
+    }
+
+    public async Task CreateWithNoValidations(Guid id, Guid trainingModuleId, Guid collaboratorId, PeriodDate periodDate)
+    {
+        IAssociationTrainingModuleCollaborator tmc;
+
+        tmc = _assocTMCFactory.Create(id, trainingModuleId, collaboratorId, periodDate);
+        await _assocTMCRepository.AddAsync(tmc);
     }
 }

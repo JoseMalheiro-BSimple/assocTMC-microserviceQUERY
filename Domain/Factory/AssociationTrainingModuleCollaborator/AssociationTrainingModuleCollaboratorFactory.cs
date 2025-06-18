@@ -31,6 +31,12 @@ public class AssociationTrainingModuleCollaboratorFactory : IAssociationTraining
         return new AssociationTrainingModuleCollaborator(trainingModuleId, collaboratorId, periodDate);
     }
 
+    public IAssociationTrainingModuleCollaborator Create(Guid id, Guid trainingModuleId, Guid collaboratorId, PeriodDate periodDate)
+    {
+        return new AssociationTrainingModuleCollaborator(id, trainingModuleId, collaboratorId, periodDate);
+
+    }
+
     public AssociationTrainingModuleCollaborator Create(IAssociationTrainingModuleCollaboratorVisitor visitor)
     {
         return new AssociationTrainingModuleCollaborator(visitor.Id, visitor.TrainingModuleId, visitor.CollaboratorId, visitor.PeriodDate);

@@ -35,6 +35,73 @@ public class AssociationTrainingModuleCollaboratorFactoryTests
     }
 
     [Fact]
+    public async Task WhenPassingInvalidCollabId_ThenThrowsArgumentException()
+    {
+        // Arrange
+        Mock<ICollaboratorRepository> collabRepo = new Mock<ICollaboratorRepository>();
+        Mock<ITrainingModuleRepository> tmRepo = new Mock<ITrainingModuleRepository>();
+
+        Mock<ITrainingModule> tm = new Mock<ITrainingModule>();
+        tmRepo.Setup(tmr => tmr.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(tm.Object);
+
+        // Example valid dates
+        DateOnly initDate = new DateOnly();
+        DateOnly endDate = initDate.AddDays(1);
+
+        var assocTMCFactory = new AssociationTrainingModuleCollaboratorFactory(collabRepo.Object, tmRepo.Object);
+
+
+        // Assert
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            // Act
+            assocTMCFactory.Create(It.IsAny<Guid>(), It.IsAny<Guid>(), initDate, endDate)
+        );
+
+        Assert.Equal("Collaborator must exists", exception.Message);
+    }
+
+    [Fact]
+    public async Task WhenPassingInvalidTrainingModuleId_ThenThrowsArgumentException()
+    {
+        // Arrange
+        Mock<ICollaboratorRepository> collabRepo = new Mock<ICollaboratorRepository>();
+        Mock<ITrainingModuleRepository> tmRepo = new Mock<ITrainingModuleRepository>();
+
+        Mock<ICollaborator> collab = new Mock<ICollaborator>();
+        collabRepo.Setup(cr => cr.GetByIdAsync(It.IsAny<Guid>())).ReturnsAsync(collab.Object);
+
+        // Example valid dates
+        DateOnly initDate = new DateOnly();
+        DateOnly endDate = initDate.AddDays(1);
+
+        var assocTMCFactory = new AssociationTrainingModuleCollaboratorFactory(collabRepo.Object, tmRepo.Object);
+
+        // Assert
+        ArgumentException exception = await Assert.ThrowsAsync<ArgumentException>(() =>
+            // Act
+            assocTMCFactory.Create(It.IsAny<Guid>(), It.IsAny<Guid>(), initDate, endDate)
+        );
+
+        Assert.Equal("TrainingModule must exist", exception.Message);
+    }
+
+    [Fact]
+    public void WhenPassingValidatedData_ThenCreateAssociationTrainingModuleCollaborator()
+    {
+        // Arrange
+        Mock<ICollaboratorRepository> collabRepo = new Mock<ICollaboratorRepository>();
+        Mock<ITrainingModuleRepository> tmRepo = new Mock<ITrainingModuleRepository>();
+
+        var assocTMCFactory = new AssociationTrainingModuleCollaboratorFactory(collabRepo.Object, tmRepo.Object);
+
+        // Act
+        var result = assocTMCFactory.Create(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<PeriodDate>());
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
     public void WhenPassingValidVisitor_ThenCreateAssociationTrainingModuleCollaborator()
     {
         // Arrange 
