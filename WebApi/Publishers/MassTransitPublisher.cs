@@ -1,12 +1,12 @@
-﻿using Application.Messaging;
+﻿using Application.Publishers;
 using Domain.Messaging;
 using MassTransit;
 
-namespace Infrastructure.Messaging;
+namespace WebApi.Publishers;
 public class MassTransitPublisher : IMessagePublisher
 {
     private readonly IPublishEndpoint _publishEndpoint;
-    
+
     public MassTransitPublisher(IPublishEndpoint publishEndpoint)
     {
         _publishEndpoint = publishEndpoint;

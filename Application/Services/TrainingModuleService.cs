@@ -1,10 +1,9 @@
-﻿using Application.Interfaces;
-using Domain.Factory;
+﻿using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
 
 namespace Application.Services;
-public class TrainingModuleService : ITrainingModuleService
+public class TrainingModuleService 
 {
     public ITrainingModuleRepository _tmRepository { get; set; }
     public ITrainingModuleFactory _tmFactory { get; set; }

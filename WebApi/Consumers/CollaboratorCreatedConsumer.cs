@@ -1,13 +1,13 @@
-﻿using Application.Interfaces;
+﻿using Application.Services;
 using Domain.Messaging;
 using MassTransit;
 
 namespace WebApi.Consumers;
 public class CollaboratorCreatedConsumer : IConsumer<CollaboratorCreated>
 {
-    private readonly ICollaboratorService _collaboratorService;
+    private readonly CollaboratorService _collaboratorService;
 
-    public CollaboratorCreatedConsumer(ICollaboratorService collaboratorService)
+    public CollaboratorCreatedConsumer(CollaboratorService collaboratorService)
     {
         _collaboratorService = collaboratorService;
     }

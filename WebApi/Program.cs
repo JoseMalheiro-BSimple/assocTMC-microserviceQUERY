@@ -1,16 +1,16 @@
 using Application.DTO;
-using Application.Messaging;
+using Application.Publishers;
 using Application.Services;
 using Domain.Factory;
 using Domain.IRepository;
 using Domain.Models;
 using Infrastructure;
-using Infrastructure.Messaging;
 using Infrastructure.Repositories;
 using Infrastructure.Resolvers;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using WebApi.Consumers;
+using WebApi.Publishers;
 
 var builder = WebApplication.CreateBuilder(args);
 

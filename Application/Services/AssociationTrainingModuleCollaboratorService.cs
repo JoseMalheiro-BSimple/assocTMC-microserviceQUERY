@@ -1,5 +1,5 @@
 using Application.DTO;
-using Application.Messaging;
+using Application.Publishers;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;

@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories;
 public class CollaboratorRepositoryEF : GenericRepositoryEF<ICollaborator, Collaborator, CollaboratorDataModel>, ICollaboratorRepository
 {
     private readonly IMapper _mapper;
-    public CollaboratorRepositoryEF(DbContext context, IMapper mapper) : base(context, mapper)
+    public CollaboratorRepositoryEF(AssocTMCContext context, IMapper mapper) : base(context, mapper)
     {
         _mapper = mapper;
     }

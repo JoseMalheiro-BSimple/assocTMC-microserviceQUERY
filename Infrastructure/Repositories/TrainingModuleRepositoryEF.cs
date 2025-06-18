@@ -9,7 +9,7 @@ namespace Infrastructure.Repositories;
 public class TrainingModuleRepositoryEF : GenericRepositoryEF<ITrainingModule, TrainingModule, TrainingModuleDataModel>, ITrainingModuleRepository
 {
     private readonly IMapper _mapper;
-    public TrainingModuleRepositoryEF(DbContext context, IMapper mapper) : base(context, mapper)
+    public TrainingModuleRepositoryEF(AssocTMCContext context, IMapper mapper) : base(context, mapper)
     {
         _mapper = mapper;
     }

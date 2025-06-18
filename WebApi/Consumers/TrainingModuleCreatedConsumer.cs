@@ -1,13 +1,13 @@
-﻿using Application.Interfaces;
+﻿using Application.Services;
 using Domain.Messaging;
 using MassTransit;
 
 namespace WebApi.Consumers;
 public class TrainingModuleCreatedConsumer : IConsumer<TrainingModuleCreated>
 {
-    private readonly ITrainingModuleService _trainingModuleService;
+    private readonly TrainingModuleService _trainingModuleService;
 
-    public TrainingModuleCreatedConsumer(ITrainingModuleService trainingModuleService)
+    public TrainingModuleCreatedConsumer(TrainingModuleService trainingModuleService)
     {
         _trainingModuleService = trainingModuleService;
     }
