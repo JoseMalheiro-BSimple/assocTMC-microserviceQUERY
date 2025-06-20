@@ -2,7 +2,7 @@
 using Domain.Messaging;
 using MassTransit;
 
-namespace WebApi.Consumers;
+namespace InterfaceAdapters.Consumers;
 public class TrainingModuleCreatedConsumer : IConsumer<TrainingModuleCreated>
 {
     private readonly TrainingModuleService _trainingModuleService;

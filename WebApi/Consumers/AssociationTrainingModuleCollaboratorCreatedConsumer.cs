@@ -2,7 +2,7 @@
 using Domain.Messaging;
 using MassTransit;
 
-namespace WebApi.Consumers;
+namespace InterfaceAdapters.Consumers;
 public class AssociationTrainingModuleCollaboratorCreatedConsumer : IConsumer<AssociationTrainingModuleCollaboratorCreated>
 {
     private readonly AssociationTrainingModuleCollaboratorService _assocService;

@@ -3,7 +3,7 @@ using Domain.Messaging;
 using Domain.Models;
 using MassTransit;
 
-namespace WebApi.Publishers;
+namespace InterfaceAdapters.Publishers;
 public class MassTransitPublisher : IMessagePublisher
 {
     private readonly IPublishEndpoint _publishEndpoint;

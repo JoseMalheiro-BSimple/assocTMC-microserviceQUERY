@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebApi.IntegrationTests.Tests
+namespace InterfaceAdapters.IntegrationTests.Tests
 {
     internal class AssociationTrainingModuleCollaboratorControllerTests
     {

@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using Newtonsoft.Json;
 
-namespace WebApi.IntegrationTests.Tests;
+namespace InterfaceAdapters.IntegrationTests.Tests;
 public class IntegrationTestBase
 {
     protected readonly HttpClient Client;
