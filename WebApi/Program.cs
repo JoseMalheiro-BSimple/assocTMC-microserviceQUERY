@@ -1,5 +1,4 @@
 using Application.DTO;
-using Application.Publishers;
 using Application.Services;
 using Domain.Factory;
 using Domain.IRepository;
@@ -10,7 +9,6 @@ using Infrastructure.Resolvers;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using InterfaceAdapters.Consumers;
-using InterfaceAdapters.Publishers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,10 +48,9 @@ builder.Services.AddAutoMapper(cfg =>
     cfg.CreateMap<AssociationTrainingModuleCollaborator, AssociationTrainingModuleCollaboratorDTO>();
 });
 
-builder.Services.AddScoped<IMessagePublisher, MassTransitPublisher>();
-
 builder.Services.AddMassTransit(x =>
 {
+    x.AddConsumer<AssociationTrainingModuleCollaboratorCreatedConsumer>();
     x.AddConsumer<CollaboratorCreatedConsumer>();
     x.AddConsumer<TrainingModuleCreatedConsumer>();
     x.UsingRabbitMq((context, cfg) =>

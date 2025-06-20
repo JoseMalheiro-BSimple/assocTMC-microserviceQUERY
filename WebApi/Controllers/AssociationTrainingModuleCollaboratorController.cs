@@ -15,12 +15,6 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
         _associationTrainingModuleCollaboratorService = associationTrainingModuleCollaboratorService;
     }
 
-    [HttpPost]
-    public async Task<ActionResult<AssociationTrainingModuleCollaboratorDTO>> Create([FromBody] CreateAssociationTrainingModuleCollaboratorDTO assocDTO)
-    {
-        var assocCreated = await _associationTrainingModuleCollaboratorService.Create(assocDTO);
-
-        return assocCreated.ToActionResult();
-    }
+    
 }
 
