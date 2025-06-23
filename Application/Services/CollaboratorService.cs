@@ -19,6 +19,9 @@ public class CollaboratorService
         ICollaborator collaborator;
 
         collaborator =  _collaboratorFactory.Create(id);
-        await _collaboratorRepository.AddAsync(collaborator);
+        collaborator = await _collaboratorRepository.AddAsync(collaborator);
+
+        if (collaborator == null)
+            throw new Exception("An error as occured!");
     }
 }

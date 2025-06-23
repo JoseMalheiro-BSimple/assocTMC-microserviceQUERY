@@ -19,6 +19,9 @@ public class TrainingModuleService
         ITrainingModule trainingModule;
 
         trainingModule = _tmFactory.Create(id);
-        await _tmRepository.AddAsync(trainingModule);
+        trainingModule = await _tmRepository.AddAsync(trainingModule);
+
+        if (trainingModule == null)
+            throw new Exception("An error as occured!");
     }
 }
