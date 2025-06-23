@@ -37,6 +37,17 @@ namespace Infrastructure.Repositories
             return _mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>(trainingModuleCollabDM);
         }
 
+        public async Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByTrainingModuleId(Guid id)
+        {
+            var tmCollabDMs = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                            .Where(tm => tm.TrainingModuleId == id)
+                                            .ToListAsync();
+
+            var tmCollabs = tmCollabDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
+
+            return tmCollabs;
+        }
+
         public async Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByTrainingModuleIds(IEnumerable<Guid> trainingModuleIds)
         {
             var trainingModuleCollaboratorsDMs = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
@@ -44,6 +55,50 @@ namespace Infrastructure.Repositories
                                                 .ToListAsync();
 
             var trainingModuleCollaborators = trainingModuleCollaboratorsDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
+
+            return trainingModuleCollaborators;
+        }
+
+        public async Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByTrainingModuleAndFinishedInPeriod(Guid id, PeriodDate periodDate)
+        {
+            var tmCollabDMs = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                            .Where(tm => tm.TrainingModuleId == id && tm.PeriodDate.FinalDate >= periodDate.InitDate && tm.PeriodDate.FinalDate <= periodDate.FinalDate)
+                                            .ToListAsync();
+            
+            var trainingModuleCollaborators = tmCollabDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
+
+            return trainingModuleCollaborators;
+        }
+
+        public async Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByCollaboratorId(Guid id)
+        {
+            var tmCollabDMs = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                            .Where(tm => tm.CollaboratorId == id)
+                                            .ToListAsync();
+
+            var tmCollabs = tmCollabDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
+
+            return tmCollabs;
+        }
+
+        public async Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByCollaboratorIds(IEnumerable<Guid> collabIds)
+        {
+            var trainingModuleCollaboratorsDMs = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                                .Where(t => collabIds.Contains(t.CollaboratorId))
+                                                .ToListAsync();
+
+            var trainingModuleCollaborators = trainingModuleCollaboratorsDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
+
+            return trainingModuleCollaborators;
+        }
+
+        public async Task<IEnumerable<AssociationTrainingModuleCollaborator>> GetByCollaboratorAndFinishedInPeriod(Guid id, PeriodDate periodDate)
+        {
+            var tmCollabDMs = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                            .Where(tm => tm.CollaboratorId == id && tm.PeriodDate.FinalDate >= periodDate.InitDate && tm.PeriodDate.FinalDate <= periodDate.FinalDate)
+                                            .ToListAsync();
+
+            var trainingModuleCollaborators = tmCollabDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, AssociationTrainingModuleCollaborator>);
 
             return trainingModuleCollaborators;
         }

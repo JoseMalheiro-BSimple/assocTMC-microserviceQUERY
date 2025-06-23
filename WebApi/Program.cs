@@ -9,6 +9,7 @@ using Infrastructure.Resolvers;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using InterfaceAdapters.Consumers;
+using InterfaceAdapters.Consumers.Definition;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -50,9 +51,9 @@ builder.Services.AddAutoMapper(cfg =>
 
 builder.Services.AddMassTransit(x =>
 {
-    x.AddConsumer<AssociationTrainingModuleCollaboratorCreatedConsumer>();
-    x.AddConsumer<CollaboratorCreatedConsumer>();
-    x.AddConsumer<TrainingModuleCreatedConsumer>();
+    x.AddConsumer<AssociationTrainingModuleCollaboratorCreatedConsumer, AssociationTrainingModuleCollaboratorConsumerDefinition>();
+    x.AddConsumer<CollaboratorCreatedConsumer, CollaboratorConsumerDefinition>();
+    x.AddConsumer<TrainingModuleCreatedConsumer, TrainingModuleConsumerDefinition>();
     x.UsingRabbitMq((context, cfg) =>
     {
         cfg.Host("rabbitmq://localhost");
