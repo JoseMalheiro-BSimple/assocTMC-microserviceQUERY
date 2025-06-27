@@ -3,7 +3,7 @@ using Domain.Interfaces;
 using Domain.IRepository;
 
 namespace Application.Services;
-public class TrainingModuleService 
+public class TrainingModuleService : ITrainingModuleService
 {
     public ITrainingModuleRepository _tmRepository { get; set; }
     public ITrainingModuleFactory _tmFactory { get; set; }

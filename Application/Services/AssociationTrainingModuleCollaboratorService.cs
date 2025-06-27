@@ -6,7 +6,7 @@ using Domain.Models;
 
 namespace Application.Services;
 
-public class AssociationTrainingModuleCollaboratorService
+public class AssociationTrainingModuleCollaboratorService : IAssociationTrainingModuleCollaboratorService
 {
     public IAssociationTrainingModuleCollaboratorsRepository _assocTMCRepository;
     public IAssociationTrainingModuleCollaboratorFactory _assocTMCFactory;
@@ -40,11 +40,41 @@ public class AssociationTrainingModuleCollaboratorService
     }
 
     /**
+     * Method gets all associations by collaborator and training module Ids
+     */
+    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollabAndTrainingModule(Guid collabId, Guid trainingModuleId)
+    {
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
+        try
+        {
+            assocs = await _assocTMCRepository.GetByCollabAndTrainingModule(collabId, trainingModuleId);
+
+            assocsResult = assocs.Select(a =>
+            {
+                var dto = new AssociationTrainingModuleCollaboratorDTO();
+                dto.Id = a.Id;
+                dto.CollaboratorId = a.CollaboratorId;
+                dto.TrainingModuleId = a.TrainingModuleId;
+                dto.PeriodDate = a.PeriodDate;
+
+                return dto;
+            });
+
+            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Success(assocsResult);
+        }
+        catch (Exception ex)
+        {
+            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
+        }
+    }
+
+    /**
      * Method gets associations that contain a certain training module 
      */
     public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByTrainingModule(Guid id)
     {
-        IEnumerable<AssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
@@ -74,7 +104,7 @@ public class AssociationTrainingModuleCollaboratorService
      */
     public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollaborator(Guid id)
     {
-        IEnumerable<AssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
@@ -104,7 +134,7 @@ public class AssociationTrainingModuleCollaboratorService
      */
     public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByMultipleTrainingModules(IEnumerable<Guid> ids)
     {
-        IEnumerable<AssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
@@ -135,7 +165,7 @@ public class AssociationTrainingModuleCollaboratorService
      */
     public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByTrainingModuleFinishedOnDate(Guid id, PeriodDate date)
     {
-        IEnumerable<AssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
@@ -165,7 +195,7 @@ public class AssociationTrainingModuleCollaboratorService
      */
     public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollab(Guid id)
     {
-        IEnumerable<AssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
@@ -195,7 +225,7 @@ public class AssociationTrainingModuleCollaboratorService
      */
     public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByMultipleCollabs(IEnumerable<Guid> ids)
     {
-        IEnumerable<AssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
@@ -226,7 +256,7 @@ public class AssociationTrainingModuleCollaboratorService
      */
     public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollabAndFinishedInPeriod(Guid id, PeriodDate date)
     {
-        IEnumerable<AssociationTrainingModuleCollaborator> assocs;
+        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
