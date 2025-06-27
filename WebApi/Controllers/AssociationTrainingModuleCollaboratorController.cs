@@ -11,7 +11,7 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
 {
     private readonly IAssociationTrainingModuleCollaboratorService _associationTrainingModuleCollaboratorService;
 
-    public AssociationTrainingModuleCollaboratorController(AssociationTrainingModuleCollaboratorService associationTrainingModuleCollaboratorService)
+    public AssociationTrainingModuleCollaboratorController(IAssociationTrainingModuleCollaboratorService associationTrainingModuleCollaboratorService)
     {
         _associationTrainingModuleCollaboratorService = associationTrainingModuleCollaboratorService;
     }

@@ -58,7 +58,8 @@ public class GetByCollabAndTrainingModuleTests : IntegrationTestBase, IClassFixt
         var assoc = list[0];
         Assert.Equal(trainingModuleId, assoc.TrainingModuleId);
         Assert.Equal(collaboratorId, assoc.CollaboratorId);
-        Assert.Equal(period, assoc.PeriodDate);
+        Assert.Equal(period.InitDate, assoc.PeriodDate.InitDate);
+        Assert.Equal(period.FinalDate, assoc.PeriodDate.FinalDate);
     }
 
     [Fact]
