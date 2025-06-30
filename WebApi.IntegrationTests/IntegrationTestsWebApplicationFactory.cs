@@ -46,7 +46,7 @@ public class IntegrationTestsWebApplicationFactory<TProgram> : WebApplicationFac
         await _postgres.StartAsync();
     }
 
-    public async Task DisposeAsync()
+    async Task IAsyncLifetime.DisposeAsync()
     {
         await _postgres.StopAsync();
     }
