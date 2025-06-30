@@ -16,9 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
-var connectionString =
-    Environment.GetEnvironmentVariable("CustomConnection") ??
-    builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 builder.Services.AddDbContext<AssocTMCContext>(opt =>
     opt.UseNpgsql(connectionString));
@@ -58,9 +56,14 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<TrainingModuleCreatedConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("rabbitmq://localhost");
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username("guest");
+            h.Password("guest");
+        });
+
         var random = Guid.NewGuid();
-        cfg.ReceiveEndpoint($"{random}", e =>
+        cfg.ReceiveEndpoint($"assocTMCQUERY-{random}", e =>
         {
             e.ConfigureConsumer<AssociationTrainingModuleCollaboratorCreatedConsumer>(context);
             e.ConfigureConsumer<CollaboratorCreatedConsumer>(context);
@@ -74,13 +77,16 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddSwaggerGen();
 
+// read env variables for connection string
+builder.Configuration.AddEnvironmentVariables();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
-    app.UseSwagger();
+    app.UseSwagger();  
     app.UseSwaggerUI();
 }
 
@@ -96,6 +102,12 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AssocTMCContext>();
+    dbContext.Database.Migrate();
+}
 
 app.Run();
 
