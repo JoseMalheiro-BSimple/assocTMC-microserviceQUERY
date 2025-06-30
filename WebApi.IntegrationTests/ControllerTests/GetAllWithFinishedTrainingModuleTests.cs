@@ -48,7 +48,7 @@ public class GetAllWithFinishedTrainingModuleTests : IntegrationTestBase, IClass
         }
 
         var query = $"api/associationsTMC/by-trainingModule/{trainingModuleId}/finished" +
-                    $"?periodDate.StartDate={period.InitDate:yyyy-MM-dd}&periodDate.EndDate={period.FinalDate:yyyy-MM-dd}";
+                    $"?periodDate.InitDate={period.InitDate:yyyy-MM-dd}&periodDate.FinalDate={period.FinalDate:yyyy-MM-dd}";
 
         // Act
         var response = await GetAndDeserializeAsync<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>(query);
@@ -61,7 +61,8 @@ public class GetAllWithFinishedTrainingModuleTests : IntegrationTestBase, IClass
         var assoc = list[0];
         Assert.Equal(trainingModuleId, assoc.TrainingModuleId);
         Assert.Equal(collaboratorId, assoc.CollaboratorId);
-        Assert.Equal(period, assoc.PeriodDate);
+        Assert.Equal(period.InitDate, assoc.PeriodDate.InitDate);
+        Assert.Equal(period.FinalDate, assoc.PeriodDate.FinalDate);
     }
 
     [Fact]

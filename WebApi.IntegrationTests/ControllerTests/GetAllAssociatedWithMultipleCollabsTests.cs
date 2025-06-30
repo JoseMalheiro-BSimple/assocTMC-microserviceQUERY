@@ -27,18 +27,15 @@ public class GetAllAssociatedWithMultipleCollabsTests : IntegrationTestBase, ICl
         var associationId1 = Guid.NewGuid();
         var associationId2 = Guid.NewGuid();
 
-        var period = new PeriodDate(
-            DateOnly.FromDateTime(DateTime.UtcNow),
-            DateOnly.FromDateTime(DateTime.UtcNow.AddMonths(1))
-        );
-
         await using (var scope = _factory.Services.CreateAsyncScope())
         {
             var context = scope.ServiceProvider.GetRequiredService<AssocTMCContext>();
 
             // Seed collaborators
-            context.Collaborators.AddRange(
-                new CollaboratorDataModel { Id = collaboratorId1 },
+            context.Collaborators.Add(
+                new CollaboratorDataModel { Id = collaboratorId1 }
+            );
+            context.Collaborators.Add(
                 new CollaboratorDataModel { Id = collaboratorId2 }
             );
 
@@ -46,22 +43,29 @@ public class GetAllAssociatedWithMultipleCollabsTests : IntegrationTestBase, ICl
             context.TrainingModules.Add(new TrainingModuleDataModel { Id = trainingModuleId });
 
             // Seed associations
-            context.AssociationTrainingModuleCollaborators.AddRange(
+            context.AssociationTrainingModuleCollaborators.Add(
                 new AssociationTrainingModuleCollaboratorDataModel
                 {
                     Id = associationId1,
                     CollaboratorId = collaboratorId1,
                     TrainingModuleId = trainingModuleId,
-                    PeriodDate = period
-                },
+                    PeriodDate = new PeriodDate(
+                        DateOnly.FromDateTime(DateTime.UtcNow),
+                        DateOnly.FromDateTime(DateTime.UtcNow.AddMonths(1))
+                    )
+                });
+
+            context.AssociationTrainingModuleCollaborators.Add(
                 new AssociationTrainingModuleCollaboratorDataModel
                 {
                     Id = associationId2,
                     CollaboratorId = collaboratorId2,
                     TrainingModuleId = trainingModuleId,
-                    PeriodDate = period
-                }
-            );
+                    PeriodDate = new PeriodDate(
+                        DateOnly.FromDateTime(DateTime.UtcNow),
+                        DateOnly.FromDateTime(DateTime.UtcNow.AddMonths(1))
+                    )
+                });
 
             await context.SaveChangesAsync();
         }

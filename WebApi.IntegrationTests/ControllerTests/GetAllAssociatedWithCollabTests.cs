@@ -60,7 +60,8 @@ public class GetAllAssociatedWithCollabTests : IntegrationTestBase, IClassFixtur
         var assoc = list[0];
         Assert.Equal(collaboratorId, assoc.CollaboratorId);
         Assert.Equal(trainingModuleId, assoc.TrainingModuleId);
-        Assert.Equal(period, assoc.PeriodDate);
+        Assert.Equal(period.InitDate, assoc.PeriodDate.InitDate);
+        Assert.Equal(period.FinalDate, assoc.PeriodDate.FinalDate);
     }
 
     [Fact]

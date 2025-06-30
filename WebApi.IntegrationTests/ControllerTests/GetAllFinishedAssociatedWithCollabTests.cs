@@ -53,8 +53,8 @@ public class GetAllFinishedAssociatedWithCollabTests : IntegrationTestBase, ICla
         }
 
         var url = $"api/associationsTMC/by-collaborator/{collaboratorId}/finished" +
-                  $"?periodDate.StartDate={period.InitDate.ToString("yyyy-MM-dd")}" +
-                  $"&periodDate.EndDate={period.FinalDate.ToString("yyyy-MM-dd")}";
+                  $"?periodDate.InitDate={period.InitDate.ToString("yyyy-MM-dd")}" +
+                  $"&periodDate.FinalDate={period.FinalDate.ToString("yyyy-MM-dd")}";
 
         // Act
         var response = await GetAndDeserializeAsync<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>(url);
@@ -65,7 +65,8 @@ public class GetAllFinishedAssociatedWithCollabTests : IntegrationTestBase, ICla
         Assert.Single(list);
         Assert.Equal(collaboratorId, list[0].CollaboratorId);
         Assert.Equal(trainingModuleId, list[0].TrainingModuleId);
-        Assert.Equal(period, list[0].PeriodDate);
+        Assert.Equal(period.InitDate, list[0].PeriodDate.InitDate);
+        Assert.Equal(period.FinalDate, list[0].PeriodDate.FinalDate);
     }
 
     [Fact]
@@ -78,8 +79,8 @@ public class GetAllFinishedAssociatedWithCollabTests : IntegrationTestBase, ICla
         );
 
         var url = $"api/associationsTMC/by-collaborator/{randomId}/finished" +
-                  $"?periodDate.StartDate={period.FinalDate:yyyy-MM-dd}" +
-                  $"&periodDate.EndDate={period.InitDate:yyyy-MM-dd}";
+                  $"?periodDate.InitiDate={period.InitDate:yyyy-MM-dd}" +
+                  $"&periodDate.FinalDate={period.FinalDate:yyyy-MM-dd}";
 
         // Act
         var response = await GetAndDeserializeAsync<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>(url);

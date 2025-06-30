@@ -63,7 +63,8 @@ public class GetAllAssociatedWithTrainingModuleTests : IntegrationTestBase, ICla
         Assert.Single(list);
         Assert.Equal(trainingModuleId, list[0].TrainingModuleId);
         Assert.Equal(collaboratorId, list[0].CollaboratorId);
-        Assert.Equal(period, list[0].PeriodDate);
+        Assert.Equal(period.InitDate, list[0].PeriodDate.InitDate);
+        Assert.Equal(period.FinalDate, list[0].PeriodDate.FinalDate);
     }
 
     [Fact]

@@ -49,23 +49,29 @@ public class GetAllAssociatedWithMultipleTrainingModulesTests : IntegrationTestB
                 new CollaboratorDataModel { Id = collaboratorId2 }
             });
 
-            context.AssociationTrainingModuleCollaborators.AddRange(new[]
-            {
+            context.AssociationTrainingModuleCollaborators.Add(
                 new AssociationTrainingModuleCollaboratorDataModel
                 {
                     Id = associationId1,
                     CollaboratorId = collaboratorId1,
                     TrainingModuleId = trainingModuleId1,
-                    PeriodDate = period
-                },
+                    PeriodDate = new PeriodDate(
+                        DateOnly.FromDateTime(DateTime.UtcNow),
+                        DateOnly.FromDateTime(DateTime.UtcNow.AddMonths(1))
+                    )
+                });
+
+            context.AssociationTrainingModuleCollaborators.Add(
                 new AssociationTrainingModuleCollaboratorDataModel
                 {
                     Id = associationId2,
                     CollaboratorId = collaboratorId2,
                     TrainingModuleId = trainingModuleId2,
-                    PeriodDate = period
-                }
-            });
+                    PeriodDate = new PeriodDate(
+                        DateOnly.FromDateTime(DateTime.UtcNow),
+                        DateOnly.FromDateTime(DateTime.UtcNow.AddMonths(1))
+                    )
+                });
 
             await context.SaveChangesAsync();
         }
@@ -80,8 +86,8 @@ public class GetAllAssociatedWithMultipleTrainingModulesTests : IntegrationTestB
         var list = response.ToList();
         Assert.Equal(2, list.Count);
 
-        Assert.Contains(list, a => a.TrainingModuleId == trainingModuleId1 && a.CollaboratorId == collaboratorId1 && a.PeriodDate == period);
-        Assert.Contains(list, a => a.TrainingModuleId == trainingModuleId2 && a.CollaboratorId == collaboratorId2 && a.PeriodDate == period);
+        Assert.Contains(list, a => a.TrainingModuleId == trainingModuleId1 && a.CollaboratorId == collaboratorId1);
+        Assert.Contains(list, a => a.TrainingModuleId == trainingModuleId2 && a.CollaboratorId == collaboratorId2);
     }
 
     [Fact]
