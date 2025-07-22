@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
+using Domain.ValueObjects;
 using Domain.Visitor;
 
 namespace Domain.IRepository;
@@ -12,4 +13,5 @@ public interface IAssociationTrainingModuleCollaboratorsRepository : IGenericRep
     Task<IEnumerable<IAssociationTrainingModuleCollaborator>> GetByCollaboratorId(Guid id);
     Task<IEnumerable<IAssociationTrainingModuleCollaborator>> GetByCollaboratorIds(IEnumerable<Guid> collabIds);
     Task<IEnumerable<IAssociationTrainingModuleCollaborator>> GetByCollaboratorAndFinishedInPeriod(Guid id, PeriodDate periodDate);
+    Task RemoveWoTracked(IAssociationTrainingModuleCollaborator entity);
 }

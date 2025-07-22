@@ -1,6 +1,6 @@
 ﻿using Application.DTO;
-using Application.Services;
-using Domain.Models;
+using Application.IServices;
+using Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InterfaceAdapters.Controllers;
@@ -34,15 +34,6 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
         return assocs.ToActionResult();
     }
 
-    // Get all associations with training module Id
-    [HttpGet("by-multiple-trainingModules")]
-    public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllAssociatedWithMultipleTrainingModules([FromQuery] List<Guid> trainingModuleIds)
-    {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByMultipleTrainingModules(trainingModuleIds);
-
-        return assocs.ToActionResult();
-    }
-
     // Get all associations who have finished with a determined training module on a certain period
     [HttpGet("by-trainingModule/{id}/finished")]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllWithFinishedTrainingModule(Guid id, [FromQuery] PeriodDate periodDate)
@@ -56,16 +47,7 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
     [HttpGet("by-collaborator/{id}")]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllAssociatedWithCollab(Guid id)
     {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollab(id);
-
-        return assocs.ToActionResult();
-    }
-
-    // Get all associations by multiple collaborator Id
-    [HttpGet("by-multiple-collaborators")]
-    public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllAssociatedWithMultipleCollabs([FromQuery] List<Guid> collabIds)
-    {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByMultipleCollabs(collabIds);
+        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollaborator(id);
 
         return assocs.ToActionResult();
     }

@@ -2,6 +2,7 @@
 using Domain.Factory;
 using Domain.IRepository;
 using Domain.Models;
+using Domain.ValueObjects;
 using Moq;
 
 namespace Application.Tests.AssociationTrainingModuleCollaboratorServiceTests;

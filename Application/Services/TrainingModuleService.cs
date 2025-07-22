@@ -1,4 +1,6 @@
-﻿using Domain.Factory;
+﻿using Application.DTO;
+using Application.IServices;
+using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
 
@@ -14,11 +16,11 @@ public class TrainingModuleService : ITrainingModuleService
         _tmFactory = trainingModuleFactory;
     }
 
-    public async Task SubmitAsync(Guid id)
+    public async Task SubmitAsync(CreateTrainingModuleDTO createDTO)
     {
         ITrainingModule trainingModule;
 
-        trainingModule = _tmFactory.Create(id);
+        trainingModule = _tmFactory.Create(createDTO.Id);
         trainingModule = await _tmRepository.AddAsync(trainingModule);
 
         if (trainingModule == null)

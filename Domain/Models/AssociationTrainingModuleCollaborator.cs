@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces;
+using Domain.ValueObjects;
 
 namespace Domain.Models;
 public class AssociationTrainingModuleCollaborator : IAssociationTrainingModuleCollaborator

@@ -1,4 +1,7 @@
-﻿using Domain.Models;
+﻿using Domain.Factory;
+using Domain.Models;
+using Domain.ValueObjects;
+using Domain.Visitor;
 using Moq;
 
 namespace Domain.Tests.TrainingModuleTests;
@@ -9,6 +12,39 @@ public class TrainingModuleFactoryTests
     public void WhenPassingValidGUID_ThenReturnTrainingModule()
     {
         // Act
-        new TrainingModule(It.IsAny<Guid>());
+        var result = new TrainingModuleFactory();
+
+        // Assert
+        Assert.NotNull(result);
+    }
+
+    [Fact]
+    public void WhenPassingValidId_ThenCreateCollaborator()
+    {
+        // Arrange
+        var tmFactory = new TrainingModuleFactory();
+
+        // Act
+        var tm = tmFactory.Create(It.IsAny<Guid>());
+
+        // Assert
+        Assert.NotNull(tm);
+    }
+
+    [Fact]
+    public void WhenPassingValidVisitor_ThenCreateCollaborator()
+    {
+        // Arrange
+        Mock<ITrainingModuleVisitor> visitor = new Mock<ITrainingModuleVisitor>();
+
+        visitor.Setup(v => v.Id).Returns(It.IsAny<Guid>());
+
+        var tmFactory = new TrainingModuleFactory();
+
+        // Act
+        var tm = tmFactory.Create(visitor.Object);
+
+        // Assert
+        Assert.NotNull(tm);
     }
 }

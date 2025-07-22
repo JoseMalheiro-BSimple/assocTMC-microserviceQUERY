@@ -1,4 +1,5 @@
 ﻿using Domain.Models;
+using Domain.ValueObjects;
 using Moq;
 
 namespace Domain.Tests.AssociationTrainingModuleCollaboratorTests;

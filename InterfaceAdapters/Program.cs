@@ -9,6 +9,8 @@ using Infrastructure.Resolvers;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using InterfaceAdapters.Consumers;
+using InterfaceAdapters.Consumers.AssociationTrainingModuleCollaboratorCreated;
+using Application.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -52,6 +54,7 @@ builder.Services.AddAutoMapper(cfg =>
 builder.Services.AddMassTransit(x =>
 {
     x.AddConsumer<AssociationTrainingModuleCollaboratorCreatedConsumer>();
+    x.AddConsumer<AssociationTrainingModuleCollaboratorRemovedConsumer>();
     x.AddConsumer<CollaboratorCreatedConsumer>();
     x.AddConsumer<TrainingModuleCreatedConsumer>();
     x.UsingRabbitMq((context, cfg) =>
@@ -66,6 +69,7 @@ builder.Services.AddMassTransit(x =>
         cfg.ReceiveEndpoint($"assocTMCQUERY-{random}", e =>
         {
             e.ConfigureConsumer<AssociationTrainingModuleCollaboratorCreatedConsumer>(context);
+            e.ConfigureConsumer<AssociationTrainingModuleCollaboratorRemovedConsumer>(context);
             e.ConfigureConsumer<CollaboratorCreatedConsumer>(context);
             e.ConfigureConsumer<TrainingModuleCreatedConsumer>(context);
         });
@@ -103,10 +107,13 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-using (var scope = app.Services.CreateScope())
+if (!app.Environment.IsEnvironment("IntegrationTests"))
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<AssocTMCContext>();
-    dbContext.Database.Migrate();
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AssocTMCContext>();
+        dbContext.Database.Migrate();
+    }
 }
 
 app.Run();

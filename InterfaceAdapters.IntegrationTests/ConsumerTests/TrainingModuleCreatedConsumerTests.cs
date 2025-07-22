@@ -1,6 +1,7 @@
-﻿using Application.Services;
+﻿using Application.DTO;
+using Application.IServices;
 using Domain.Messages;
-using Domain.Models;
+using Domain.ValueObjects;
 using InterfaceAdapters.Consumers;
 using MassTransit;
 using Moq;
@@ -17,19 +18,19 @@ public class TrainingModuleCreatedConsumerTests
         var mockService = new Mock<ITrainingModuleService>();
         var consumer = new TrainingModuleCreatedConsumer(mockService.Object);
 
-        var message = new TrainingModuleCreated(
+        var message = new TrainingModuleCreatedMessage(
             Guid.NewGuid(),
             Guid.NewGuid(),
             new List<PeriodDateTime> { new PeriodDateTime() }
         );
 
-        var mockContext = new Mock<ConsumeContext<TrainingModuleCreated>>();
+        var mockContext = new Mock<ConsumeContext<TrainingModuleCreatedMessage>>();
         mockContext.Setup(c => c.Message).Returns(message);
 
         // Act
         await consumer.Consume(mockContext.Object);
 
         // Assert
-        mockService.Verify(s => s.SubmitAsync(message.id), Times.Once);
+        mockService.Verify(s => s.SubmitAsync(new CreateTrainingModuleDTO(message.Id)), Times.Once);
     }
 }

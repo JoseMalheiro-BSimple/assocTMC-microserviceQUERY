@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.DTO;
+using Application.Services;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
@@ -27,7 +28,7 @@ public class SubmitAsyncTests
         var service = new TrainingModuleService(repositoryMock.Object, factoryMock.Object);
 
         // Act
-        await service.SubmitAsync(testId);
+        await service.SubmitAsync(new CreateTrainingModuleDTO(testId));
 
         // Assert
         factoryMock.Verify(f => f.Create(testId), Times.Once);
@@ -55,7 +56,7 @@ public class SubmitAsyncTests
         var service = new TrainingModuleService(repositoryMock.Object, factoryMock.Object);
 
         // Act
-        var exception = await Assert.ThrowsAsync<Exception>(() => service.SubmitAsync(testId));
+        var exception = await Assert.ThrowsAsync<Exception>(() => service.SubmitAsync(new CreateTrainingModuleDTO(testId)));
         Assert.Equal("An error as occured!", exception.Message);
 
         // Assert

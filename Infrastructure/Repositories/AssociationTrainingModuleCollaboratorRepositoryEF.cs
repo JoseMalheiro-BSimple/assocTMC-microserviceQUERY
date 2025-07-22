@@ -2,6 +2,7 @@
 using Domain.Interfaces;
 using Domain.IRepository;
 using Domain.Models;
+using Domain.ValueObjects;
 using Infrastructure.DataModel;
 using Microsoft.EntityFrameworkCore;
 
@@ -110,6 +111,26 @@ namespace Infrastructure.Repositories
             var trainingModuleCollaborators = tmCollabDMs.Select(_mapper.Map<AssociationTrainingModuleCollaboratorDataModel, IAssociationTrainingModuleCollaborator>);
 
             return trainingModuleCollaborators;
+        }
+
+        public async Task RemoveWoTracked(IAssociationTrainingModuleCollaborator entity)
+        {
+            var trackedDataModel = _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                           .Local
+                                           .FirstOrDefault(dm => dm.Id == entity.Id);
+
+            if (trackedDataModel == null)
+            {
+                trackedDataModel = await _context.Set<AssociationTrainingModuleCollaboratorDataModel>()
+                                               .FirstOrDefaultAsync(dm => dm.Id == entity.Id);
+                if (trackedDataModel == null)
+                {
+                    return;
+                }
+            }
+
+            _context.Set<AssociationTrainingModuleCollaboratorDataModel>().Remove(trackedDataModel);
+
         }
     }
 }

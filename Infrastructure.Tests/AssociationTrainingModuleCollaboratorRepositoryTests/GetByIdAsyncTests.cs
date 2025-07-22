@@ -1,5 +1,6 @@
 ﻿using Domain.Interfaces;
 using Domain.Models;
+using Domain.ValueObjects;
 using Infrastructure.DataModel;
 using Infrastructure.Repositories;
 using Moq;

@@ -1,5 +1,5 @@
 ﻿using Application.DTO;
-using Domain.Models;
+using Domain.ValueObjects;
 using Infrastructure;
 using Infrastructure.DataModel;
 using InterfaceAdapters.IntegrationTests.Tests;

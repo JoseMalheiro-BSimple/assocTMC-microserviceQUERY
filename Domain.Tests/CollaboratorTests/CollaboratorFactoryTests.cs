@@ -6,6 +6,17 @@ namespace Domain.Tests.CollaboratorTests;
 public class CollaboratorFactoryTests
 {
     [Fact]
+    public void WhenPassingValidData_TheInstatiateFactory()
+    {
+        // Arrange
+
+        // Act
+        var factory = new CollaboratorFactory();
+
+        // Assert
+        Assert.NotNull(factory);
+    }
+    [Fact]
     public void WhenPassingValidId_ThenCreateCollaborator()
     {
         // Arrange

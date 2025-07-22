@@ -1,8 +1,9 @@
 using Application.DTO;
+using Application.IServices;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.Models;
+using Domain.ValueObjects;
 
 namespace Application.Services;
 
@@ -130,36 +131,6 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
     }
 
     /**
-     * Method gets all associations with a training module from a list of training modules
-     */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByMultipleTrainingModules(IEnumerable<Guid> ids)
-    {
-        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
-        IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
-        try
-        {
-            assocs = await _assocTMCRepository.GetByTrainingModuleIds(ids);
-
-            assocsResult = assocs.Select(a =>
-            {
-                var dto = new AssociationTrainingModuleCollaboratorDTO();
-                dto.Id = a.Id;
-                dto.CollaboratorId = a.CollaboratorId;
-                dto.TrainingModuleId = a.TrainingModuleId;
-                dto.PeriodDate = a.PeriodDate;
-
-                return dto;
-            });
-
-            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Success(assocsResult);
-        }
-        catch (Exception ex)
-        {
-            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
-        }
-    }
-
-    /**
      * Method gets all associations with a training module who have finished
      * inside the period passed
      */
@@ -170,66 +141,6 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
         try
         {
             assocs = await _assocTMCRepository.GetByTrainingModuleAndFinishedInPeriod(id, date);
-
-            assocsResult = assocs.Select(a =>
-            {
-                var dto = new AssociationTrainingModuleCollaboratorDTO();
-                dto.Id = a.Id;
-                dto.CollaboratorId = a.CollaboratorId;
-                dto.TrainingModuleId = a.TrainingModuleId;
-                dto.PeriodDate = a.PeriodDate;
-
-                return dto;
-            });
-
-            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Success(assocsResult);
-        }
-        catch (Exception ex)
-        {
-            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
-        }
-    }
-
-    /**
-     * Method gets all associations with a determined collaborator
-     */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollab(Guid id)
-    {
-        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
-        IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
-        try
-        {
-            assocs = await _assocTMCRepository.GetByCollaboratorId(id);
-
-            assocsResult = assocs.Select(a =>
-            {
-                var dto = new AssociationTrainingModuleCollaboratorDTO();
-                dto.Id = a.Id;
-                dto.CollaboratorId = a.CollaboratorId;
-                dto.TrainingModuleId = a.TrainingModuleId;
-                dto.PeriodDate = a.PeriodDate;
-
-                return dto;
-            });
-
-            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Success(assocsResult);
-        }
-        catch (Exception ex)
-        {
-            return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
-        }
-    }
-
-    /**
-     * Method gets all associations with collaborators from a list of collaborators
-     */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByMultipleCollabs(IEnumerable<Guid> ids)
-    {
-        IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
-        IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
-        try
-        {
-            assocs = await _assocTMCRepository.GetByCollaboratorIds(ids);
 
             assocsResult = assocs.Select(a =>
             {
@@ -278,6 +189,29 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
         catch (Exception ex)
         {
             return Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>.Failure(Error.InternalServerError(ex.Message));
+        }
+    }
+
+    public async Task<Result> Remove(RemoveAssociationTrainingModuleCollaboratorDTO assocDTO)
+    {
+        IAssociationTrainingModuleCollaborator? associationToRemove;
+        try
+        {
+            associationToRemove = await _assocTMCRepository.GetByIdAsync(assocDTO.Id);
+
+            if (associationToRemove == null)
+            {
+                return Result.Failure(Error.NotFound("AssociationTrainingModuleCollaborator not found."));
+            }
+
+            await _assocTMCRepository.RemoveWoTracked(associationToRemove);
+            await _assocTMCRepository.SaveChangesAsync();
+
+            return Result.Success();
+        }
+        catch (Exception ex)
+        {
+            return Result.Failure(Error.InternalServerError($"An unexpected error occurred: {ex.Message}"));
         }
     }
 }

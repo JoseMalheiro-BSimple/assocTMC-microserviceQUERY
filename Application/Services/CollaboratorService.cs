@@ -1,4 +1,6 @@
-﻿using Domain.Factory;
+﻿using Application.DTO;
+using Application.IServices;
+using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
 
@@ -14,11 +16,11 @@ public class CollaboratorService : ICollaboratorService
         _collaboratorFactory = collaboratorFactory;
     }
 
-    public async Task SubmitAsync(Guid id)
+    public async Task SubmitAsync(CreateCollaboratorDTO creaateDTO)
     {
         ICollaborator collaborator;
 
-        collaborator =  _collaboratorFactory.Create(id);
+        collaborator =  _collaboratorFactory.Create(creaateDTO.Id);
         collaborator = await _collaboratorRepository.AddAsync(collaborator);
 
         if (collaborator == null)

@@ -1,11 +1,23 @@
 ﻿using Domain.Factory;
-using Domain.Models;
+using Domain.IRepository;
+using Domain.ValueObjects;
 using Domain.Visitor;
 using Moq;
 
 namespace Domain.Tests.AssociationTrainingModuleCollaboratorTests;
 public class AssociationTrainingModuleCollaboratorFactoryTests
 {
+    [Fact]
+    public void WhenPassingValidDependencies_ThenInstatiateFactory()
+    {
+        // Arrange
+
+        // Act
+        var factory = new AssociationTrainingModuleCollaboratorFactory(); ;
+
+        // Assert
+        Assert.NotNull(factory);
+    }
 
     [Fact]
     public void WhenPassingValidatedData_ThenCreateAssociationTrainingModuleCollaborator()
