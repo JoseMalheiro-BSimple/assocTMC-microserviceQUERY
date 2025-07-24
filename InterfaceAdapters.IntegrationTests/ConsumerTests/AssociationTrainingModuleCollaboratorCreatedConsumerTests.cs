@@ -1,4 +1,5 @@
-﻿using Application.IServices;
+﻿using Application.DTO;
+using Application.IServices;
 using Domain.Messages;
 using Domain.Models;
 using Domain.ValueObjects;
@@ -33,10 +34,12 @@ public class AssociationTrainingModuleCollaboratorCreatedConsumerTests
 
         // Assert
         mockService.Verify(s => s.CreateWithNoValidations(
-            message.Id,
-            message.TrainingModuleId,
-            message.CollaboratorId,
-            message.PeriodDate
+            new CreateConsumedAssociationTrainingModuleCollaboratorDTO(
+                    message.Id,
+                    message.TrainingModuleId,
+                    message.CollaboratorId,
+                    message.PeriodDate
+                )
         ), Times.Once);
     }
 

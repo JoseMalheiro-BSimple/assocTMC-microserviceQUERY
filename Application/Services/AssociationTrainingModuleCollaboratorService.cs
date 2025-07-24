@@ -3,7 +3,6 @@ using Application.IServices;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
-using Domain.ValueObjects;
 
 namespace Application.Services;
 
@@ -23,16 +22,16 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
      * 
      * Because this is coming from another microservice -> no validation is needed
      */
-    public async Task CreateWithNoValidations(Guid id, Guid trainingModuleId, Guid collaboratorId, PeriodDate periodDate)
+    public async Task CreateWithNoValidations(CreateConsumedAssociationTrainingModuleCollaboratorDTO createDTO)
     {
         // There is no data validation, but there is validation to no insert duplicate values on table
-        IAssociationTrainingModuleCollaborator? assoc = await _assocTMCRepository.GetByIdAsync(id);
+        IAssociationTrainingModuleCollaborator? assoc = await _assocTMCRepository.GetByIdAsync(createDTO.Id);
 
         if (assoc == null)
         {
             IAssociationTrainingModuleCollaborator tmc;
 
-            tmc = _assocTMCFactory.Create(id, trainingModuleId, collaboratorId, periodDate);
+            tmc = _assocTMCFactory.Create(createDTO.Id, createDTO.TrainingModuleId, createDTO.CollaboratorId, createDTO.PeriodDate);
             tmc = await _assocTMCRepository.AddAsync(tmc);
 
             if (tmc == null)
@@ -43,13 +42,13 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
     /**
      * Method gets all associations by collaborator and training module Ids
      */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollabAndTrainingModule(Guid collabId, Guid trainingModuleId)
+    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollabAndTrainingModule(SearchByCollabAndTrainingModuleDTO searchDTO)
     {
         IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
-            assocs = await _assocTMCRepository.GetByCollabAndTrainingModule(collabId, trainingModuleId);
+            assocs = await _assocTMCRepository.GetByCollabAndTrainingModule(searchDTO.CollaboratorId, searchDTO.TrainingModuleId);
 
             assocsResult = assocs.Select(a =>
             {
@@ -73,13 +72,13 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
     /**
      * Method gets associations that contain a certain training module 
      */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByTrainingModule(Guid id)
+    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByTrainingModule(SearchByIdDTO searchDTO)
     {
         IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
-            assocs = await _assocTMCRepository.GetByTrainingModuleId(id);
+            assocs = await _assocTMCRepository.GetByTrainingModuleId(searchDTO.Id);
 
             assocsResult = assocs.Select(a =>
             {
@@ -103,13 +102,13 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
     /**
      * Method gets associations that contain a certain collaborator 
      */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollaborator(Guid id)
+    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollaborator(SearchByIdDTO searchDTO)
     {
         IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
-            assocs = await _assocTMCRepository.GetByCollaboratorId(id);
+            assocs = await _assocTMCRepository.GetByCollaboratorId(searchDTO.Id);
 
             assocsResult = assocs.Select(a =>
             {
@@ -134,13 +133,13 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
      * Method gets all associations with a training module who have finished
      * inside the period passed
      */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByTrainingModuleFinishedOnDate(Guid id, PeriodDate date)
+    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByTrainingModuleFinishedOnDate(SearchByIdAndPeriodDateDTO searchDTO)
     {
         IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
-            assocs = await _assocTMCRepository.GetByTrainingModuleAndFinishedInPeriod(id, date);
+            assocs = await _assocTMCRepository.GetByTrainingModuleAndFinishedInPeriod(searchDTO.Id, searchDTO.PeriodDate);
 
             assocsResult = assocs.Select(a =>
             {
@@ -165,14 +164,13 @@ public class AssociationTrainingModuleCollaboratorService : IAssociationTraining
      * Method gets all associations with a collaborator,
      * who have finished in-between the period
      */
-    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollabAndFinishedInPeriod(Guid id, PeriodDate date)
+    public async Task<Result<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> FindAllAssociationsByCollabAndFinishedInPeriod(SearchByIdAndPeriodDateDTO searchDTO)
     {
         IEnumerable<IAssociationTrainingModuleCollaborator> assocs;
         IEnumerable<AssociationTrainingModuleCollaboratorDTO> assocsResult;
         try
         {
-            assocs = await _assocTMCRepository.GetByCollaboratorAndFinishedInPeriod(id, date);
-
+            assocs = await _assocTMCRepository.GetByCollaboratorAndFinishedInPeriod(searchDTO.Id, searchDTO.PeriodDate);
             assocsResult = assocs.Select(a =>
             {
                 var dto = new AssociationTrainingModuleCollaboratorDTO();

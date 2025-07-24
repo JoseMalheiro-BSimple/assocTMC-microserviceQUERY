@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.DTO;
+using Application.Services;
 using Domain.Factory;
 using Domain.IRepository;
 using Domain.Models;
@@ -29,7 +30,7 @@ public class FindAllAssociationsByCollabAndTrainingModuleTests
         AssociationTrainingModuleCollaboratorService _service = new AssociationTrainingModuleCollaboratorService(_mockRepository.Object, _mockFactory.Object);
         
         // Act
-        var result = await _service.FindAllAssociationsByCollabAndTrainingModule(collabId, trainingModuleId);
+        var result = await _service.FindAllAssociationsByCollabAndTrainingModule(new SearchByCollabAndTrainingModuleDTO(collabId, trainingModuleId));
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -56,7 +57,7 @@ public class FindAllAssociationsByCollabAndTrainingModuleTests
         AssociationTrainingModuleCollaboratorService _service = new AssociationTrainingModuleCollaboratorService(_mockRepository.Object, _mockFactory.Object);
 
         // Act
-        var result = await _service.FindAllAssociationsByCollabAndTrainingModule(collabId, trainingModuleId);
+        var result = await _service.FindAllAssociationsByCollabAndTrainingModule(new SearchByCollabAndTrainingModuleDTO(collabId, trainingModuleId));
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -80,7 +81,7 @@ public class FindAllAssociationsByCollabAndTrainingModuleTests
         AssociationTrainingModuleCollaboratorService _service = new AssociationTrainingModuleCollaboratorService(_mockRepository.Object, _mockFactory.Object);
 
         // Act
-        var result = await _service.FindAllAssociationsByCollabAndTrainingModule(collabId, trainingModuleId);
+        var result = await _service.FindAllAssociationsByCollabAndTrainingModule(new SearchByCollabAndTrainingModuleDTO(collabId, trainingModuleId));
 
         // Assert
         Assert.False(result.IsSuccess);

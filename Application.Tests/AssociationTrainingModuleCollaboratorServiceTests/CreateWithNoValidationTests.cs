@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.DTO;
+using Application.Services;
 using Domain.Factory;
 using Domain.Interfaces;
 using Domain.IRepository;
@@ -22,7 +23,7 @@ public class CreateWithNoValidationTests
 
         mockRepository
             .Setup(r => r.GetByIdAsync(id))
-            .ReturnsAsync((IAssociationTrainingModuleCollaborator?)null); // Not found
+            .ReturnsAsync((IAssociationTrainingModuleCollaborator?)null); 
 
         mockFactory
             .Setup(f => f.Create(id, trainingModuleId, collaboratorId, It.IsAny<PeriodDate>()))
@@ -30,12 +31,12 @@ public class CreateWithNoValidationTests
 
         mockRepository
             .Setup(r => r.AddAsync(mockAssoc.Object))
-            .ReturnsAsync(mockAssoc.Object); // Successfully added
+            .ReturnsAsync(mockAssoc.Object);
 
         var service = new AssociationTrainingModuleCollaboratorService(mockRepository.Object, mockFactory.Object);
 
         // Act
-        await service.CreateWithNoValidations(id, trainingModuleId, collaboratorId, It.IsAny<PeriodDate>());
+        await service.CreateWithNoValidations(new CreateConsumedAssociationTrainingModuleCollaboratorDTO(id, collaboratorId, trainingModuleId, It.IsAny<PeriodDate>()));
 
         // Assert
         mockRepository.Verify(r => r.GetByIdAsync(id), Times.Once);
@@ -62,7 +63,7 @@ public class CreateWithNoValidationTests
         var service = new AssociationTrainingModuleCollaboratorService(mockRepository.Object, mockFactory.Object);
 
         // Act
-        await service.CreateWithNoValidations(id, trainingModuleId, collaboratorId, It.IsAny<PeriodDate>());
+        await service.CreateWithNoValidations(new CreateConsumedAssociationTrainingModuleCollaboratorDTO(id, trainingModuleId, collaboratorId, It.IsAny<PeriodDate>()));
 
         // Assert
         mockRepository.Verify(r => r.GetByIdAsync(id), Times.Once);

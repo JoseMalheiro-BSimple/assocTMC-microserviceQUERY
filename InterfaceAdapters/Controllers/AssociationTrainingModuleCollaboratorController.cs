@@ -20,7 +20,8 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllByCollabAndTrainingModule([FromQuery] Guid collabId, [FromQuery] Guid trainingModuleId)
     {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollabAndTrainingModule(collabId, trainingModuleId);
+        var dto = new SearchByCollabAndTrainingModuleDTO(collabId, trainingModuleId);
+        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollabAndTrainingModule(dto);
 
         return assocs.ToActionResult();
     }
@@ -29,7 +30,8 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
     [HttpGet("by-trainingModule/{id}")]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllAssociatedWithTrainingModule(Guid id)
     {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByTrainingModule(id);
+        var dto = new SearchByIdDTO(id);
+        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByTrainingModule(dto);
 
         return assocs.ToActionResult();
     }
@@ -38,7 +40,8 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
     [HttpGet("by-trainingModule/{id}/finished")]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllWithFinishedTrainingModule(Guid id, [FromQuery] PeriodDate periodDate)
     {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByTrainingModuleFinishedOnDate(id, periodDate);
+        var dto = new SearchByIdAndPeriodDateDTO(id, periodDate);
+        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByTrainingModuleFinishedOnDate(dto);
 
         return assocs.ToActionResult();
     }
@@ -47,7 +50,8 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
     [HttpGet("by-collaborator/{id}")]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllAssociatedWithCollab(Guid id)
     {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollaborator(id);
+        var dto = new SearchByIdDTO(id);
+        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollaborator(dto);
 
         return assocs.ToActionResult();
     }
@@ -56,7 +60,8 @@ public class AssociationTrainingModuleCollaboratorController : ControllerBase
     [HttpGet("by-collaborator/{id}/finished")]
     public async Task<ActionResult<IEnumerable<AssociationTrainingModuleCollaboratorDTO>>> GetAllFinishedAssociatedWithCollab(Guid id, [FromQuery] PeriodDate periodDate)
     {
-        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollabAndFinishedInPeriod(id, periodDate);
+        var dto = new SearchByIdAndPeriodDateDTO(id, periodDate);
+        var assocs = await _associationTrainingModuleCollaboratorService.FindAllAssociationsByCollabAndFinishedInPeriod(dto);
 
         return assocs.ToActionResult();
     }

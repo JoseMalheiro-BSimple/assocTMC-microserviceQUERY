@@ -1,4 +1,5 @@
-﻿using Application.IServices;
+﻿using Application.DTO;
+using Application.IServices;
 using Domain.Messages;
 using MassTransit;
 
@@ -15,6 +16,6 @@ public class AssociationTrainingModuleCollaboratorCreatedConsumer : IConsumer<As
     public async Task Consume(ConsumeContext<AssociationTrainingModuleCollaboratorCreatedMessage> context)
     {
         var msg = context.Message;
-        await _assocService.CreateWithNoValidations(msg.Id, msg.TrainingModuleId, msg.CollaboratorId, msg.PeriodDate);
+        await _assocService.CreateWithNoValidations(new CreateConsumedAssociationTrainingModuleCollaboratorDTO(msg.Id, msg.TrainingModuleId, msg.CollaboratorId, msg.PeriodDate));
     }
 }

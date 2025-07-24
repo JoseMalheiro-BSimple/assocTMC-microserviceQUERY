@@ -1,4 +1,5 @@
-﻿using Application.Services;
+﻿using Application.DTO;
+using Application.Services;
 using Domain.Factory;
 using Domain.IRepository;
 using Domain.Models;
@@ -34,7 +35,7 @@ public class FindAllAssociationsByTrainingModuleFinishedOnDateTests
         var service = new AssociationTrainingModuleCollaboratorService(repoMock.Object, factoryMock.Object);
 
         // Act
-        var result = await service.FindAllAssociationsByTrainingModuleFinishedOnDate(trainingModuleId, periodDate);
+        var result = await service.FindAllAssociationsByTrainingModuleFinishedOnDate(new SearchByIdAndPeriodDateDTO(trainingModuleId, periodDate));
 
         // Assert
         Assert.True(result.IsSuccess);
@@ -66,7 +67,7 @@ public class FindAllAssociationsByTrainingModuleFinishedOnDateTests
         var service = new AssociationTrainingModuleCollaboratorService(repoMock.Object, factoryMock.Object);
 
         // Act
-        var result = await service.FindAllAssociationsByTrainingModuleFinishedOnDate(trainingModuleId, periodDate);
+        var result = await service.FindAllAssociationsByTrainingModuleFinishedOnDate(new SearchByIdAndPeriodDateDTO(trainingModuleId, periodDate));
 
         // Assert
         Assert.True(result.IsFailure);

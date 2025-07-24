@@ -18,13 +18,13 @@ public class TrainingModuleCreatedConsumerTests
         var mockService = new Mock<ITrainingModuleService>();
         var consumer = new TrainingModuleCreatedConsumer(mockService.Object);
 
-        var message = new TrainingModuleCreatedMessage(
+        var message = new TrainingModuleMessage(
             Guid.NewGuid(),
             Guid.NewGuid(),
             new List<PeriodDateTime> { new PeriodDateTime() }
         );
 
-        var mockContext = new Mock<ConsumeContext<TrainingModuleCreatedMessage>>();
+        var mockContext = new Mock<ConsumeContext<TrainingModuleMessage>>();
         mockContext.Setup(c => c.Message).Returns(message);
 
         // Act
